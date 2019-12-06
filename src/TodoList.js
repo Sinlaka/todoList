@@ -4,20 +4,23 @@ import {Input, Button, List} from 'antd'
 import axios from 'axios'
 import store from './store/index'
 
-const data = [
-    '早8点开晨会，分配今天的开发工作',
-    '早9点和项目经理作开发需求讨论会',
-    '晚5:30对今日代码进行review'
-]
+import {changeInputAction, addItemAction, deleteItemAction} from './store/actionCreators'
+//知识点：
+// Store的角色是整个应用的数据存储中心，集中大部分页面需要的状态数据；
+// ActionCreators ,view 层与data层的介质；
+// Reduce ，接收action并更新Store。
+// 所以流程是 用户通过界面组件 触发ActionCreator，携带Store中的旧State与Action 流向Reducer,Reducer返回新的state，并更新界面。
+
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = store.getState();
-        this.buttonClick = this.buttonClick.bind(this)
+        this.changeInput = this.changeInput.bind(this)
+        this.addItem = this.addItem.bind(this)
+
         this.storeChange = this.storeChange.bind(this)
         store.subscribe(this.storeChange)
-        // console.log(this.state)
     }
 
     componentDidMount() {
@@ -33,28 +36,33 @@ class TodoList extends Component {
             <div>
                 <Input placeholder={this.state.emptyText}
                        value={this.state.inputValue}
-                       style={{width: '200px'}}
-                    // ref={(Input) => {
-                    //     this.Input = Input
-                    // }}
-                       onChange={this.buttonClick}/>
-
-                <Button type="primary">Primary</Button>
+                       style={{width: '200px', margin: '10px'}}
+                       ref='input'
+                       onChange={this.changeInput}
+                />
+                <Button type="primary" onClick={this.addItem}>Primary</Button>
                 <List
                     bordered
                     dataSource={this.state.list}
-                    renderItem={item => <List.Item>{item}</List.Item>}></List>
+                    renderItem={(item, index) => <List.Item onClick={this.delItem.bind(this,index)}>{item}</List.Item>}></List>
             </div>
         );
     }
 
-    buttonClick(e) {
-        const action = {
-            type: 'changeInput',
-            emptyText: e.target.value
-        }
-        store.dispatch(action)
+    //key={item + index}
+    changeInput(e) {
+        store.dispatch(changeInputAction(e.target.value))
     }
+
+    addItem(e) {
+        //console.log(this.refs)
+        store.dispatch(addItemAction(this.state.inputValue))
+    }
+
+    delItem(e,index) {
+        store.dispatch(deleteItemAction(index))
+    }
+
     storeChange() {
         this.setState(store.getState())
     }
