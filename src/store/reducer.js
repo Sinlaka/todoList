@@ -24,7 +24,8 @@ export default (state = defaultStore, action) => {
             newState.inputValue = action.inputValue
             return newState;
         case ADD_ITEM:
-            newState.list.add(action.inputValue);
+            newState.list.push(action.inputValue);
+            newState.inputValue="";
             return newState;
         case DELETE_ITEM:
             newState.list.splice(action.index,1);
