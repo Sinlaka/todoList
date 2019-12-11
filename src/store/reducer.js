@@ -4,12 +4,12 @@ import {CHANGE_INPUT, ADD_ITEM, DELETE_ITEM} from './actionTypes'
 
 const defaultStore = {
     emptyText: 'write something',
-    inputValue:"gg",
+    inputValue: "gg",
     list: [
         't推拿',
         '针灸']
 }
-
+//Reducer必须是纯函数：如果函数的调用参数相同，则永远返回相同的结果。它不依赖于程序执行期间函数外部任何状态或数据的变化，必须只依赖于其输入参数。
 /**Reducer里只能接收state，不能改变state
  *  方法函数
  * @param state  指的是原始仓库里的状态
@@ -25,11 +25,13 @@ export default (state = defaultStore, action) => {
             return newState;
         case ADD_ITEM:
             newState.list.push(action.inputValue);
-            newState.inputValue="";
+            newState.inputValue = "";
             return newState;
         case DELETE_ITEM:
-            newState.list.splice(action.index,1);
+            newState.list.splice(action.index, 1);
             return newState;
+        default:
+            return state
     }
-    return state
+    // return state
 }
