@@ -1,4 +1,6 @@
-# redux-thunk中间件
+# redux中间件
+
+## redux-thunk中间件
 
 
 
@@ -27,7 +29,7 @@ npm install --save redux-thunk
    import reducer from './reducer'    
    import thunk from 'redux-thunk'
    
-   //链式函数
+   //增强函数相当于链式函数
    const composeEnhancers =   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
    ​    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}):compose
    
@@ -38,4 +40,23 @@ npm install --save redux-thunk
    ```
 
 
-   
+
+可以看出来redux-thunk最重要的思想，就是可以接受一个返回函数的action creator。如果这个action creator 返回的是一个函数，就执行它，如果不是，就按照原来的next(action)执行。
+ 正因为这个action creator可以返回一个函数，那么就可以在这个函数中执行一些异步的操作。
+ 例如：
+
+```jsx
+export function addCount() {
+  return {type: ADD_COUNT}
+} 
+export function addCountAsync() {
+  return dispatch => {
+    setTimeout( () => {
+      dispatch(addCount())
+    },2000)
+  }//欢迎加入全栈开发交流圈一起学习交流：864305860
+}//面向1-3年前端人员
+```
+
+## redux-saga中间件
+
