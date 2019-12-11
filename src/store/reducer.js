@@ -1,6 +1,6 @@
 //***Reducer里只能接收state，不能改变state。***//
 //默认数据
-import {CHANGE_INPUT, ADD_ITEM, DELETE_ITEM} from './actionTypes'
+import {CHANGE_INPUT, ADD_ITEM, DELETE_ITEM, GET_LIST} from './actionTypes'
 
 const defaultStore = {
     emptyText: 'write something',
@@ -16,10 +16,15 @@ const defaultStore = {
  * @param action 指的是action新传递的状态
  */
 export default (state = defaultStore, action) => {
-    console.log(state, action)
+    // console.log(state, action)
     //因为不能改变原本的state,重新克隆深拷贝一个state返回过去
     let newState = JSON.parse(JSON.stringify(state));
     switch (action.type) {
+        case GET_LIST:
+            if (action.data.list) {
+                newState.list = action.data.list;
+            }
+            return newState;
         case CHANGE_INPUT:
             newState.inputValue = action.inputValue
             return newState;
@@ -31,6 +36,7 @@ export default (state = defaultStore, action) => {
             newState.list.splice(action.index, 1);
             return newState;
         default:
+            console.log('action',action)
             return state
     }
     // return state

@@ -5,7 +5,7 @@ import store from './store/index'
 
 import axios from 'axios'
 
-import {changeInputAction, addItemAction, deleteItemAction} from './store/actionCreators'
+import {changeInputAction, addItemAction, deleteItemAction, getListAction} from './store/actionCreators'
 
 //知识点：
 // Store的角色是整个应用的数据存储中心，集中大部分页面需要的状态数据；
@@ -26,7 +26,13 @@ class TodoList extends Component {
 
     componentDidMount() {
         axios.get('/getList').then((res) => {
-            //console.log(res)
+            console.log(res)
+            // let list = res.data.list;
+            // this.setState({
+            //     list:list
+            // })
+            store.dispatch(getListAction(res.data))
+
         }).catch((err) => {
 
         })
@@ -55,7 +61,7 @@ class TodoList extends Component {
     }
 
     deleteItem(index) {
-        console.log(index)
+        // console.log(index)
         store.dispatch(deleteItemAction(index))
     }
 

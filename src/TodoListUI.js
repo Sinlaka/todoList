@@ -7,7 +7,7 @@ import {Input, Button, List} from 'antd'
 
 //无状态组件，没有state,适用于只有UI层
 const TodoListUI = (props) => {
-    console.log('无状态组件参数',props)
+    // console.log('无状态组件参数',props)
     return (
         <div>
             <Input placeholder={props.emptyText}
